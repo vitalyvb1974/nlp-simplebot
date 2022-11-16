@@ -2,11 +2,24 @@ import tkinter.scrolledtext as tks #creates a scrollable text window
 
 from datetime import datetime
 from tkinter import *
+from nltk.chat.util import Chat
 
 
 # Generating response
 def get_bot_response(user_input):
-   
+  pairs = [
+    ('my name is (.*)', ['Hello ! % 1']),
+    ('(hi|hello|hey|holla|hola)', ['Hey there !', 'Hi there !', 'Hey !']),
+    ('(.*) your name ?', ['My name is Geeky']),
+    ('(.*) do you do ?', ['We provide a platform for tech enthusiasts, a wide range of options !']),
+    ('(.*) created you ?', ['Geeksforgeeks created me using python and NLTK']),
+    ('(.*) your day', ['It was good, thanks for asking!', 'Ah, I had a long day at the office... how about you?']),
+  ]
+
+  chat = Chat(pairs)  
+  while user_input[-1] in "!.":
+    user_input = user_input[:-1]
+  bot_response = chat.respond(user_input)   
   return bot_response
 
 
@@ -67,7 +80,7 @@ def send(event):
 
 baseWindow = Tk()
 baseWindow.title("The Simple Bot")
-baseWindow.geometry("500x300")
+baseWindow.geometry("500x250")
 
 chatWindow = tks.ScrolledText(baseWindow, font="Arial")
 chatWindow.tag_configure('tag-left', justify='left')
@@ -87,8 +100,9 @@ baseWindow.bind('<Return>', send)
 
 userEntryBox = Text(baseWindow, bd=1, bg="white", width=38, font="Arial")
 
-chatWindow.place(x=1, y=1, height=270, width=500)
-userEntryBox.place(x=3, y=272, height=27)
-sendButton.place(x=430, y=270)
+chatWindow.place(x=1, y=1, height=200, width=500)
+userEntryBox.place(x=3, y=202, height=27)
+sendButton.place(x=430, y=200)
 
 baseWindow.mainloop()    
+
